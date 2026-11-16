@@ -1,8 +1,8 @@
 <script>
+    import { untrack } from "svelte";
     import { Checkbox, Label } from "bits-ui";
     import { persist, retrieve } from "@utility/utils";
 
-    const label = `${value}-label`;
     /**
      * @typedef {Object} Props
      * @property {String} value (required) The "code" value of the checkbox
@@ -19,8 +19,10 @@
         children,
     } = $props();
 
+    const label = $derived(`${value}-label`);
+
     /** @type {boolean} */
-    let checked = $state(retrieve(id) == true);
+    let checked = $state(untrack(() => retrieve(id) == true));
 
     export function isChecked() {
         return checked;

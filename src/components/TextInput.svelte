@@ -1,4 +1,5 @@
 <script>
+    import { untrack } from "svelte";
     import { persist, retrieve } from "@utility/utils";
 
     /**
@@ -22,7 +23,7 @@
         autocomplete = "off",
     } = $props();
 
-    let value = $state(retrieve(id));
+    let value = $state(untrack(() => retrieve(id)));
 
     function handleInputChanges() {
         persist(id, value);
