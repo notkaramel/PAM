@@ -43,7 +43,9 @@
     data-input-counter
 />
 
-<style lang="postcss">
+<style>
+    @reference "tailwindcss";
+
     input {
         @apply box-border border-2 border-emerald-600 rounded-md py-1 m-auto text-center;
     }

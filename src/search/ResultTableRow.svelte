@@ -1,7 +1,6 @@
 <script>
     import { untrack } from "svelte";
     import ChantDetails from "@search/ChantDetails.svelte";
-    import ChantVerovioRender from "@search/ChantVerovioRender.svelte";
     import Button from "@components/Button.svelte";
 
     import { Chant } from "@utility/components";
@@ -381,13 +380,15 @@
                         <!-- Content: Modern Rendition -->
                         <Accordion.Content class={accordionContent}>
                             <div transition:scale>
-                                <ChantVerovioRender
-                                    {chant}
-                                    highlightOptions={{
-                                        melodicPatternNc: melodicPatternNc,
-                                        melismaPatternSyl: melismaPatternSyl,
-                                    }}
-                                />
+                                {#await import("@search/ChantVerovioRender.svelte") then { default: ChantVerovioRender }}
+                                    <ChantVerovioRender
+                                        {chant}
+                                        highlightOptions={{
+                                            melodicPatternNc: melodicPatternNc,
+                                            melismaPatternSyl: melismaPatternSyl,
+                                        }}
+                                    />
+                                {/await}
                             </div>
                         </Accordion.Content>
                     </Accordion.Item>
@@ -397,7 +398,9 @@
     </tr>
 {/if}
 
-<style lang="postcss">
+<style>
+    @reference "tailwindcss";
+
     .accordion-header {
         @apply w-full text-left font-bold;
     }

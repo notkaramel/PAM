@@ -16,7 +16,9 @@
     Back to top ▲
 </button>
 
-<style lang="postcss">
+<style>
+    @reference "tailwindcss";
+
     button {
         @apply hidden fixed bottom-4 left-4 z-50;
 

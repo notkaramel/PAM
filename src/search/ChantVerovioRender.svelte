@@ -2,8 +2,6 @@
   import { highlightPattern, spotlightText } from "@utility/utils";
   import { Chant } from "@utility/components";
   import { onMount } from "svelte";
-  import createVerovioModule from "verovio/wasm";
-  import { VerovioToolkit } from "verovio/esm";
 
   /**
    * @typedef {Object} Props
@@ -29,12 +27,8 @@
     });
   }
 
-  let verovioToolkit = $state(async () => {
-    createVerovioModule().then((VerovioModule) => {
-      // This line initializes the Verovio toolkit
-      verovioToolkit = new VerovioToolkit(VerovioModule);
-    });
-  });
+  /** @type {any} */
+  let verovioToolkit = $state(null);
 
   /**
    * Draw the MEI content to the screen
@@ -45,6 +39,9 @@
   async function drawSVGFromMEIContent(meiContent) {
     let svg;
     try {
+      const [{ default: createVerovioModule }, { VerovioToolkit }] =
+        await Promise.all([import("verovio/wasm"), import("verovio/esm")]);
+
       /** @type {SVGElement} */
       await createVerovioModule().then((VerovioModule) => {
         // This line initializes the Verovio toolkit
