@@ -1,7 +1,5 @@
 /* Global stylesheet */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 * {
   --melisma-text: hsl(115, 61%, 28%);

@@ -1,4 +1,5 @@
 <script>
+    import { untrack } from "svelte";
     import { persist, retrieve } from "@utility/utils";
 
     /**
@@ -22,7 +23,7 @@
         autocomplete = "off",
     } = $props();
 
-    let value = $state(retrieve(id));
+    let value = $state(untrack(() => retrieve(id)));
 
     function handleInputChanges() {
         persist(id, value);
@@ -52,7 +53,9 @@
     {autocomplete}
 />
 
-<style lang="postcss">
+<style>
+    @reference "tailwindcss";
+
     input {
         @apply w-full border-2 border-emerald-600 rounded-md px-2 py-1 my-2;
         @apply focus-visible:border-emerald-800;

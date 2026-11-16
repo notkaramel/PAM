@@ -17,14 +17,12 @@
 
   let inputValue = $state("");
   let selection = $state("");
-  let availableOptions = $state(allOptions);
+  let availableOptions = $derived(
+    allOptions.filter((item) =>
+      item.toLowerCase().includes(inputValue.toLowerCase()),
+    ),
+  );
   let displayOptions = $derived(availableOptions.slice(0, 7));
-
-  $effect(() => {
-    availableOptions = allOptions.filter((item) => {
-      return item.toLowerCase().includes(inputValue.toLowerCase());
-    });
-  });
 
   export function getInputValue() {
     return inputValue;

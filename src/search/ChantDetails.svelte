@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, untrack } from "svelte";
     import { notationTypeToString } from "@utility/utils";
     import { Chant } from "@utility/components";
 
@@ -12,44 +12,46 @@
     let { chant } = $props();
     let chantInfo = $state();
 
-    let modeCalcLink = document.createElement("a");
-    modeCalcLink.rel = "external";
-    modeCalcLink.target = "_blank";
-    // if (chant.notationType == "square") {
-    //     modeCalcLink.innerText =
-    //         "Mode Detection for Square Script (github.com)";
-    //     modeCalcLink.href =
-    //         "https://github.com/ECHOES-from-the-Past/mei-analyser/wiki/Mode-Detection-for-Square-Script";
-    // } else
-    if (chant.notationType == "aquitanian") {
-        modeCalcLink.innerText =
-            "Mode Detection for Aquitanian Script (github.com)";
-        modeCalcLink.href +=
-            "https://github.com/ECHOES-from-the-Past/mei-analyser/wiki/Mode-Detection-for-Aquitanian-Script";
-    }
+    const allInfo = untrack(() => {
+        let modeCalcLink = document.createElement("a");
+        modeCalcLink.rel = "external";
+        modeCalcLink.target = "_blank";
+        // if (chant.notationType == "square") {
+        //     modeCalcLink.innerText =
+        //         "Mode Detection for Square Script (github.com)";
+        //     modeCalcLink.href =
+        //         "https://github.com/ECHOES-from-the-Past/mei-analyser/wiki/Mode-Detection-for-Square-Script";
+        // } else
+        if (chant.notationType == "aquitanian") {
+            modeCalcLink.innerText =
+                "Mode Detection for Aquitanian Script (github.com)";
+            modeCalcLink.href +=
+                "https://github.com/ECHOES-from-the-Past/mei-analyser/wiki/Mode-Detection-for-Aquitanian-Script";
+        }
 
-    let modeMoreInfoLink = document.createElement("p");
-    modeMoreInfoLink.innerHTML = "For more information, see ";
-    modeMoreInfoLink.append(modeCalcLink);
+        let modeMoreInfoLink = document.createElement("p");
+        modeMoreInfoLink.innerHTML = "For more information, see ";
+        modeMoreInfoLink.append(modeCalcLink);
 
-    let allInfo = {
-        Title: chant.title,
-        Source: chant.source,
-        "Cantus ID": chant.cantusId,
-        "PEM Database URL": chant.pemUrls,
-        "Music Script": notationTypeToString(chant.notationType),
-        "Possible Mode(s)":
-            chant.mode != null
-                ? chant.mode.length == 0
-                    ? "Unknown"
-                    : chant.mode.join(", ")
-                : null,
-        "Mode Analysis":
-            chant.modeDescription != null
-                ? chant.modeDescription + modeMoreInfoLink.outerHTML
-                : null,
-        "MEI File": chant.fileName,
-    };
+        return {
+            Title: chant.title,
+            Source: chant.source,
+            "Cantus ID": chant.cantusId,
+            "PEM Database URL": chant.pemUrls,
+            "Music Script": notationTypeToString(chant.notationType),
+            "Possible Mode(s)":
+                chant.mode != null
+                    ? chant.mode.length == 0
+                        ? "Unknown"
+                        : chant.mode.join(", ")
+                    : null,
+            "Mode Analysis":
+                chant.modeDescription != null
+                    ? chant.modeDescription + modeMoreInfoLink.outerHTML
+                    : null,
+            "MEI File": chant.fileName,
+        };
+    });
 
     onMount(() => {
         for (let info in allInfo) {
