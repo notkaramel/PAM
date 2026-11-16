@@ -16,8 +16,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/PAM/",
-    "database": "node src/database/database.mjs",
+    "build": "vite build",
+    "database": "bun src/database/database.mjs",
     "preview": "NODE_ENV=production npm run database && vite preview --base=/PAM/",
     "algorithm": "node src/cross-comparison/test-algorithm.js"
   },
